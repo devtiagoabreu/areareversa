@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { isAuthed } from "@/lib/auth";
+import { generateText, NoKeyAvailableError, AIRequestFailedError } from "@/lib/ai/run";
 
 /**
  * Traduz um post do português para inglês ou espanhol.
@@ -11,14 +12,12 @@ import { isAuthed } from "@/lib/auth";
  *
  * A resposta vem como JSON pedido no próprio prompt. Se o modelo devolver o
  * JSON embrulhado em ```json, o parse limpa a cerca antes de tentar.
+ *
+ * A chave usada vem da tabela ai_keys (admin), com failover entre chaves.
  */
 export async function POST(req: Request) {
   if (!(await isAuthed())) {
     return NextResponse.json({ error: "não autorizado" }, { status: 401 });
-  }
-  const key = process.env.GEMINI_API_KEY;
-  if (!key) {
-    return NextResponse.json({ error: "GEMINI_API_KEY não configurada" }, { status: 500 });
   }
 
   // Corpo inválido não pode virar 500: o formulário do admin mostraria um erro
@@ -60,18 +59,27 @@ ${excerpt}
 Conteúdo em português:
 ${content}`;
 
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${key}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+  let text: string;
+  try {
+    const result = await generateText({
+      prompt,
+      endpoint: "translate",
+      temperature: 0.3,
+      maxTokens: 16000,
+    });
+    text = result.content;
+  } catch (error) {
+    if (error instanceof NoKeyAvailableError) {
+      return NextResponse.json({ error: error.message }, { status: 503 });
     }
-  );
-  const data = await res.json();
-  const text: string | undefined = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (error instanceof AIRequestFailedError) {
+      return NextResponse.json({ error: "Falha ao traduzir", detalhe: error.message }, { status: 502 });
+    }
+    throw error;
+  }
+
   if (!text) {
-    return NextResponse.json({ error: "Falha ao traduzir", detalhe: data }, { status: 500 });
+    return NextResponse.json({ error: "Falha ao traduzir" }, { status: 502 });
   }
 
   // Remove cerca de código e pega o primeiro objeto JSON do texto.

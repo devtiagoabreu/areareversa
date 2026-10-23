@@ -58,10 +58,15 @@ export async function getKeyWithDecrypted(keyId: string): Promise<KeyWithDecrypt
  * Selects the next available key for a request
  * Implements failover logic: tries keys in priority order, skips exhausted/errored/rate-limited
  */
-export async function getNextAvailableKey(context: AIContext): Promise<KeyWithDecrypted | null> {
+export async function getNextAvailableKey(
+  context: AIContext,
+  excludeKeyIds: string[] = []
+): Promise<KeyWithDecrypted | null> {
   const keys = await getActiveKeys();
   
   for (const key of keys) {
+    if (excludeKeyIds.includes(key.id)) continue;
+
     // Check if key has sufficient quota
     const available = key.monthlyTokenLimit - key.currentMonthUsed;
     if (available < context.estimatedTokens) {

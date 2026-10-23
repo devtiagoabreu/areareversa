@@ -1,29 +1,26 @@
 import { NextResponse } from "next/server";
 import { isAuthed } from "@/lib/auth";
+import { generateText, NoKeyAvailableError, AIRequestFailedError } from "@/lib/ai/run";
 
 export async function POST(req: Request) {
   if (!(await isAuthed())) {
     return NextResponse.json({ error: "não autorizado" }, { status: 401 });
   }
-  const key = process.env.GEMINI_API_KEY;
-  if (!key) {
-    return NextResponse.json({ error: "GEMINI_API_KEY não configurada" }, { status: 500 });
-  }
+
   const { tema, instrucoes } = await req.json();
   const prompt = `Você é um redator do blog "área reversa" (engenharia reversa de ideias, discursos e políticas, tom crítico, direto, sem filtro). Escreva uma postagem em Markdown bem estruturada (título H1, subtítulos, parágrafos curtos) sobre: ${tema}. ${instrucoes ?? ""}`;
 
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${key}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+  try {
+    // Usa a chave cadastrada em ai_keys (com failover), não a do .env
+    const result = await generateText({ prompt, endpoint: "generate", maxTokens: 8000 });
+    return NextResponse.json({ texto: result.content });
+  } catch (error) {
+    if (error instanceof NoKeyAvailableError) {
+      return NextResponse.json({ error: error.message }, { status: 503 });
     }
-  );
-  const data = await res.json();
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) {
-    return NextResponse.json({ error: "Falha ao gerar", detalhe: data }, { status: 500 });
+    if (error instanceof AIRequestFailedError) {
+      return NextResponse.json({ error: "Falha ao gerar", detalhe: error.message }, { status: 502 });
+    }
+    throw error;
   }
-  return NextResponse.json({ texto: text });
 }
