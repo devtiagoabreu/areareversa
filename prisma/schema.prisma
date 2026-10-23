@@ -125,3 +125,114 @@ model Webmention {
   @@index([createdAt])
   @@map("webmentions")
 }
+
+model AIKey {
+  id                String   @id @default(cuid())
+  name              String
+  provider          AIProvider
+  apiKeyEncrypted   String   @map("api_key_encrypted")
+  model             String
+  baseUrl           String?
+  priority          Int      @default(1)
+  monthlyTokenLimit Int      @map("monthly_token_limit")
+  currentMonthUsed  Int      @default(0) @map("current_month_used")
+  totalLifetimeUsed Int      @default(0) @map("total_lifetime_used")
+  status            AIKeyStatus @default(ACTIVE)
+  lastUsedAt        DateTime? @map("last_used_at")
+  errorCount        Int      @default(0) @map("error_count")
+  notes             String?
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  usageLogs         AIUsageLog[]
+  fromFailoverEvents AIFailoverEvent[] @relation("FromKeyFailovers")
+  toFailoverEvents   AIFailoverEvent[] @relation("ToKeyFailovers")
+  contextSessions   AIContextSession[]
+
+  @@index([provider])
+  @@index([priority])
+  @@index([status])
+  @@map("ai_keys")
+}
+
+model AIUsageLog {
+  id              String   @id @default(cuid())
+  keyId           String   @map("key_id")
+  key             AIKey    @relation(fields: [keyId], references: [id], onDelete: Cascade)
+  model           String
+  promptTokens    Int      @map("prompt_tokens")
+  completionTokens Int     @map("completion_tokens")
+  totalTokens     Int      @map("total_tokens")
+  endpoint        String
+  success         Boolean
+  errorMessage    String?  @map("error_message")
+  latencyMs       Int      @map("latency_ms")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([keyId])
+  @@index([createdAt])
+  @@map("ai_usage_logs")
+}
+
+model AIFailoverEvent {
+  id              String         @id @default(cuid())
+  fromKeyId       String?        @map("from_key_id")
+  fromKey         AIKey?         @relation("FromKeyFailovers", fields: [fromKeyId], references: [id], onDelete: SetNull)
+  toKeyId         String?        @map("to_key_id")
+  toKey           AIKey?         @relation("ToKeyFailovers", fields: [toKeyId], references: [id], onDelete: SetNull)
+  fromModel       String?        @map("from_model")
+  toModel         String?        @map("to_model")
+  reason          FailoverReason
+  tokensUsed      Int            @map("tokens_used")
+  sessionId       String         @map("session_id")
+  createdAt       DateTime       @default(now()) @map("created_at")
+
+  @@index([fromKeyId])
+  @@index([toKeyId])
+  @@index([sessionId])
+  @@index([createdAt])
+  @@map("ai_failover_events")
+}
+
+model AIContextSession {
+  id            String   @id @default(cuid())
+  keyId         String?  @map("key_id")
+  key           AIKey?   @relation(fields: [keyId], references: [id], onDelete: SetNull)
+  sessionId     String   @unique @map("session_id")
+  messages      Json
+  systemPrompt  String   @map("system_prompt")
+  currentTask   String?  @map("current_task")
+  artifacts     Json     @default("[]")
+  tokenBudget   Int      @default(4000) @map("token_budget")
+  metadata      Json     @default("{}")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@index([keyId])
+  @@index([sessionId])
+  @@map("ai_context_sessions")
+}
+
+enum AIProvider {
+  OPENAI
+  ANTHROPIC
+  GOOGLE
+  GROQ
+  DEEPSEEK
+  CUSTOM
+}
+
+enum AIKeyStatus {
+  ACTIVE
+  EXHAUSTED
+  ERROR
+  DISABLED
+}
+
+enum FailoverReason {
+  EXHAUSTED
+  ERROR
+  RATE_LIMIT
+  MANUAL
+  MODEL_SWITCH
+}

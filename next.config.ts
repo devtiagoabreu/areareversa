@@ -4,9 +4,8 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   images: { remotePatterns: [{ protocol: "https", hostname: "**" }] },
-  turbopack: {},
 };
 
 const withPWAConfig = withPWA({
@@ -50,4 +49,4 @@ const withPWAConfig = withPWA({
   ],
 });
 
-export default withPWAConfig(withNextIntl(nextConfig));
+export default withPWAConfig(withNextIntl({ images: { remotePatterns: [{ protocol: "https", hostname: "**" }] } }));
