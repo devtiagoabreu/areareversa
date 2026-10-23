@@ -12,6 +12,7 @@
     "seed": "tsx scripts/seed.mjs",
     "backup": "node scripts/backup.mjs",
     "sync:md": "node scripts/sync-md.mjs",
+    "ai:key": "node scripts/add-ai-key.mjs",
     "restore": "node scripts/restore.mjs"
   },
   "dependencies": {

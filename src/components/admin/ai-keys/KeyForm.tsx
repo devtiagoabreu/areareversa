@@ -12,7 +12,7 @@ interface KeyFormProps {
 const PROVIDERS = [
   { value: 'OPENAI', label: 'OpenAI', models: ['gpt-4o', 'gpt-4o-mini', 'gpt-4-turbo', 'gpt-4', 'gpt-3.5-turbo'] },
   { value: 'ANTHROPIC', label: 'Anthropic', models: ['claude-3-5-sonnet-20241022', 'claude-3-opus-20240229', 'claude-3-haiku-20240307'] },
-  { value: 'GOOGLE', label: 'Google (Gemini)', models: ['gemini-1.5-pro', 'gemini-1.5-flash', 'gemini-1.0-pro'] },
+  { value: 'GOOGLE', label: 'Google (Gemini)', models: ['gemini-3.5-flash-lite', 'gemini-3-flash', 'gemini-3-pro'] },
   { value: 'GROQ', label: 'Groq', models: ['llama-3.1-70b-versatile', 'llama-3.1-8b-instant', 'mixtral-8x7b-32768'] },
   { value: 'DEEPSEEK', label: 'DeepSeek', models: ['deepseek-chat', 'deepseek-coder'] },
   { value: 'CUSTOM', label: 'Custom (OpenAI-compatible)', models: [] },

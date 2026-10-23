@@ -6,8 +6,8 @@ import { ProviderConfig, CompletionOptions, CompletionResult } from './base';
 
 export class GoogleProvider {
   readonly provider = 'GOOGLE';
-  readonly defaultModel = 'gemini-1.5-pro';
-  readonly contextWindow = 2000000; // 2M for Gemini 1.5 Pro
+  readonly defaultModel = 'gemini-3.5-flash-lite';
+  readonly contextWindow = 1000000;
   
   private config: { apiKey: string; model: string; baseUrl?: string };
   
@@ -23,7 +23,7 @@ export class GoogleProvider {
     const start = Date.now();
     try {
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(this.config.model)}:generateContent?key=${apiKey}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

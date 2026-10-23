@@ -61,8 +61,8 @@ export function getProviderMetadata(provider: string): {
       supportsVision: true,
     },
     GOOGLE: {
-      contextWindow: 2000000,
-      defaultModel: 'gemini-1.5-pro',
+      contextWindow: 1000000,
+      defaultModel: 'gemini-3.5-flash-lite',
       supportsTools: true,
       supportsVision: true,
     },
