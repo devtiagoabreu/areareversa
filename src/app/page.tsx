@@ -1,5 +1,3 @@
-"use client";
-
 import { NewsletterForm } from "@/components/NewsletterForm";
 import { ShareButtons } from "@/components/ShareButtons";
 import LandingPodcast from "@/components/LandingPodcast";
