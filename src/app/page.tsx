@@ -206,11 +206,10 @@ export default async function Home() {
         <div className="mt-4 flex items-center gap-2 text-primary">
           <span className="text-xs">Copie este código PIX:</span>
           <button
-            onClick={() => navigator.clipboard.writeText('00020126580014br.gov.bcb.pix01365d5b4252-6d17-4b1f-9081-e0746509225c5204000053039865802BR5924Tiago de Abreu Alves de 6009Sao Paulo62230519daqr15110173136507163041A3B')}
             className="text-xs font-medium underline underline-offset-2 hover:no-underline"
-            aria-label="Copiar código PIX"
+            aria-label="Código PIX para copiar"
           >
-            Copiar
+            00020126580014br.gov.bcb.pix01365d5b4252-6d17-4b1f-9081-e0746509225c5204000053039865802BR5924Tiago de Abreu Alves de 6009Sao Paulo62230519daqr15110173136507163041A3B
           </button>
         </div>
         <p className="text-xs text-[#6b7280] mt-2 dark:text-[#9ca3af]">
