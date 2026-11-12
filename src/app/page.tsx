@@ -169,6 +169,29 @@ export default async function Home() {
           Explorar o blog →
         </Link>
       </section>
+
+      <section className="flex flex-col items-start gap-6 rounded-3xl border border-[#e5e7eb] bg-[#f9f7fa] p-10 dark:border-[#2a2a30] dark:bg-[#17171c]">
+        <h2 className="text-2xl font-bold tracking-[0.22em]">Apoie a área reversa</h2>
+        <p className="text-sm text-[#4b5563] dark:text-[#d4d4d8]">Seu apoio ajuda a manter o projeto independente e semanário.</p>
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          <div className="flex items-center gap-2">
+            <span className="text-xl">📱</span>
+            <div>
+              <p className="font-medium">Chave PIX: tiago@areareversa.com.br</p>
+              <p className="text-xs text-[#6b7280]">Tiago de Abreu Alves</p>
+              <p className="text-xs text-[#6b7280]">São Paulo, SP</p>
+            </div>
+          </div>
+          <img
+            src="/apoiar/pix/qrcode/qr-code-pix.png"
+            alt="QR Code PIX para doar"
+            className="w-24 h-24 object-cover rounded-lg"
+          />
+        </div>
+        <p className="text-xs text-[#6b7280] mt-4 dark:text-[#9ca3af]">
+          Copie a chave acima ou escaneie o QR Code para doar via PIX
+        </p>
+      </section>
     </div>
   );
 }
