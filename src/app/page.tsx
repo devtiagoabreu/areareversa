@@ -197,7 +197,7 @@ export default async function Home() {
               </span>
             </a>
             <img
-              src="/apoiar/pix/qrcode/qr-code-pix.png"
+              src="/apoiar/pix/qrcode/qr-code-pix.svg"
               alt="QR Code PIX para doar"
               className="w-24 h-24 object-cover rounded-lg"
             />

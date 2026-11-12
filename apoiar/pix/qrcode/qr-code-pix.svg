@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- QR Code PIX para doaçoes - estilo areareversa -->
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fundo branco -->
+  <rect width="300" height="300" fill="#ffffff"/>
+  <!-- Padrão do QR Code (simplificado para estilo visual) -->
+  <!-- Módulos pretos em padrão de QR Code -->
+  <g id="qrcode" fill="#1a1a1a">
+    <!-- Padrão de posicionamento (3 quadrados grandes) -->
+    <rect x="0" y="0" width="75" height="75" fill="#1a1a1a"/>
+    <rect x="225" y="0" width="75" height="75" fill="#1a1a1a"/>
+    <rect x="0" y="225" width="75" height="75" fill="#1a1a1a"/>
+    <!-- Padrão de posicionamento adicional -->
+    <rect x="225" y="225" width="75" height="75" fill="#1a1a1a"/>
+    <!-- Linhas e colunas do padrão -->
+    <g fill="#1a1a1a">
+      <rect x="75" y="0" width="75" height="15"/>
+      <rect x="75" y="75" width="75" height="15"/>
+      <rect x="75" y="150" width="75" height="15"/>
+      <rect x="75" y="225" width="75" height="15"/>
+      <rect x="0" y="75" width="15" height="75"/>
+      <rect x="150" y="75" width="15" height="75"/>
+      <rect x="225" y="75" width="15" height="75"/>
+      <rect x="0" y="150" width="15" height="75"/>
+      <rect x="0" y="225" width="15" height="75"/>
+    </g>
+  </g>
+  <!-- Texto informativo -->
+  <text x="150" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666666">PIX: tiago@areareversa.com.br</text>
+</svg>
