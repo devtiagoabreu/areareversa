@@ -35,8 +35,18 @@ export default async function Home() {
   } catch {}
 
   const topClicks = await prisma.event
-    .groupBy({ by: ["target"], where: { type: "click", createdAt: { gte: new Date(Date.now() - 7 * 86400000) } }, _count: { target: "desc" }, take: 5)
-    .catch(() => []);
+    .groupBy({
+      by: ["target"],
+      where: {
+        type: "click",
+        createdAt: {
+          gte: new Date(Date.now() - 7 * 86400000),
+        },
+      },
+      _count: { target: "desc" },
+    })
+      .catch(() => []);
+
   const topPostSlugs = topClicks.map((t) => t.target).filter(Boolean) as string[];
   const topPosts = topPostSlugs.length
     ? await prisma.post.findMany({ where: { slug: { in: topPostSlugs } }, select: { slug: true, title: true, excerpt: true } }).catch(() => [])
@@ -90,7 +100,7 @@ export default async function Home() {
 
         {episode?.audioUrl && (
           <LandingPodcast episode={{ ...episode, audioUrl: episode.audioUrl }} />
-        })
+        )
 
         <section className="flex flex-col gap-8">
           <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-[#9ca3af]">Últimas do blog</h2>
