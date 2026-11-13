@@ -100,7 +100,7 @@ export default async function Home() {
 
         {episode?.audioUrl && (
           <LandingPodcast episode={{ ...episode, audioUrl: episode.audioUrl }} />
-        )
+        )}
 
         <section className="flex flex-col gap-8">
           <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-[#9ca3af]">Últimas do blog</h2>
