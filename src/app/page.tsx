@@ -133,7 +133,7 @@ export default async function Home() {
                   <h3 className="text-lg font-semibold leading-snug tracking-tight">{p.title}</h3>
                   <p className="text-sm text-[#4b5563] dark:text-[#d4d4d8]">{p.excerpt}</p>
                 </Link>
-              ))}
+              )}
             </div>
           </section>
         )}
