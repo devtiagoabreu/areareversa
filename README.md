@@ -1,11 +1,10 @@
-# área reversa🩸
+# área reversa
 
 Blog e podcast de engenharia reversa de narrativas — ideias, discursos e políticas desmontados sem filtro.
 
 <div align="center">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://github.com/devtiagoabreu/areareversa/blob/main/LICENSE)
-[![Vercel](https://vercel.com/badge-vercel?vercel-url=https%3A%2F%2Fareareversa.vercel.app&slug=areareversa&rgb=black)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fdevtiagoabreu%2Fareareversa)
 [![GitHub stars](https://img.shields.io/github/stars/devtiagoabreu/areareversa?style=social&color=ff79c6)](https://github.com/devtiagoabreu/areareversa/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/devtiagoabreu/areareversa?style=social&color=bd93f9)](https://github.com/devtiagoabreu/areareversa/forks)
 [![Twitter](https://img.shields.io/badge/x-@devtiagoabreu-1da1f2?style=social)](https://twitter.com/devtiagoabreu)
