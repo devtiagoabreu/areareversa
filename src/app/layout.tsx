@@ -59,6 +59,14 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     type: "website",
     url: "/",
+    images: [
+      {
+        url: "/logo-areareversa-preto-blackbg.svg",
+        width: 128,
+        height: 128,
+        alt: "área reversa - black background logo",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -70,6 +78,19 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
   },
+  // Favicons with black background and white logo
+  icons: [
+    {
+      rel: "icon",
+      type: "image/svg+xml",
+      href: "/favicon-black.svg",
+    },
+    {
+      rel: "apple-touch-icon",
+      href: "/apple-touch-icon-black.svg",
+      sizes: "180x180",
+    },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
