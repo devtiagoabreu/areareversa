@@ -1,5 +1,6 @@
 import { NewsletterForm } from "@/components/NewsletterForm";
 import { ShareButtons } from "@/components/ShareButtons";
+import { PixCopy } from "@/components/PixCopy";
 import LandingPodcast from "@/components/LandingPodcast";
 import { publishedFilter } from "@/lib/posts";
 import { fetchEpisodes } from "@/lib/podcast";
@@ -170,15 +171,28 @@ export default async function Home() {
         </Link>
       </section>
 
-      <section className="flex flex-col items-center gap-6 rounded-3xl border border-[#e5e7eb] bg-[#f9f7fa] p-10 dark:border-[#2a2a30] dark:bg-[#17171c]">
-        <img
-          src="/apoiar/pix/qrcode/qr_pix_area_reversa_com_logo.png"
-          alt="QR Code PIX para doar"
-          className="h-64 w-64 rounded-xl object-contain sm:h-80 sm:w-80"
-        />
-        <code className="block w-full select-all break-all rounded-xl border border-[#e5e7eb] bg-white px-4 py-3 text-center text-[11px] leading-relaxed text-[#4b5563] dark:border-[#2a2a30] dark:bg-[#0f0f12] dark:text-[#d4d4d8]">
-          00020126580014br.gov.bcb.pix01365d5b4252-6d17-4b1f-9081-e0746509225c5204000053039865802BR5924Tiago de Abreu Alves de 6009Sao Paulo62230519daqr15110173136507163041A3B
-        </code>
+      <section className="rounded-3xl border border-[#e5e7eb] bg-[#f9f7fa] p-8 dark:border-[#2a2a30] dark:bg-[#17171c] sm:p-10">
+        <div className="grid gap-8 sm:grid-cols-2 sm:items-center">
+          <div className="flex flex-col gap-4">
+            <h2 className="text-2xl font-bold tracking-[0.22em]">Apoie a área reversa</h2>
+            <p className="text-sm leading-relaxed text-[#4b5563] dark:text-[#d4d4d8]">
+              Seu apoio ajuda a manter este projeto online e independente — sem anúncios, sem paywall e sem depender de algoritmo. Cada contribuição paga a hospedagem, o banco de dados e as horas de pesquisa.
+            </p>
+            <p className="text-sm leading-relaxed text-[#4b5563] dark:text-[#d4d4d8]">
+              Escaneie o QR Code ao lado ou use o código copia-e-cola abaixo no aplicativo do seu banco.
+            </p>
+          </div>
+          <div className="flex justify-center sm:justify-end">
+            <img
+              src="/apoiar/pix/qrcode/qr_pix_area_reversa_com_logo.png"
+              alt="QR Code PIX para apoiar a área reversa"
+              className="h-64 w-64 rounded-xl object-contain sm:h-72 sm:w-72 lg:h-80 lg:w-80"
+            />
+          </div>
+        </div>
+        <div className="mt-8">
+          <PixCopy code="00020126580014br.gov.bcb.pix01365d5b4252-6d17-4b1f-9081-e0746509225c5204000053039865802BR5924Tiago de Abreu Alves de 6009Sao Paulo62230519daqr15110173136507163041A3B" />
+        </div>
       </section>
     </div>
   );

@@ -62,8 +62,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/logo-areareversa-preto-blackbg.svg",
-        width: 128,
-        height: 128,
+        width: 512,
+        height: 512,
         alt: "área reversa - black background logo",
       },
     ],
