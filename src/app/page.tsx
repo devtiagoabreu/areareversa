@@ -35,24 +35,15 @@ export default async function Home() {
   } catch {}
 
   const topClicks = await prisma.event
-    .groupBy({
-      by: ["target"],
-      where: {
-        type: "click",
-        createdAt: {
-          gte: new Date(Date.now() - 7 * 86400000),
-        },
-      },
-      _count: { target: "desc" },
-    })
-      .catch(() => []);
-
+    .groupBy({ by: ["target"], where: { type: "click", createdAt: { gte: new Date(Date.now() - 7 * 86400000) } }, _count: { _all: true }, orderBy: { _count: { target: "desc" } }, take: 5 })
+    .catch(() => []);
   const topPostSlugs = topClicks.map((t) => t.target).filter(Boolean) as string[];
   const topPosts = topPostSlugs.length
     ? await prisma.post.findMany({ where: { slug: { in: topPostSlugs } }, select: { slug: true, title: true, excerpt: true } }).catch(() => [])
     : [];
 
-  /* Último episódio do podcast. O feed é lido com cache de 10 min: o mesmo
+  /*
+    Último episódio do podcast. O feed é lido com cache de 10 min: o mesmo
     caminho da página /podcast, sem depender de publicar nada aqui.
   */
   const episode = (await fetchEpisodes({ revalidate: 600 }).catch(() => null))?.episodes?.[0];
@@ -97,43 +88,134 @@ export default async function Home() {
             ))}
           </div>
         )}
+      </section>
 
-        {episode?.audioUrl && (
-          <LandingPodcast episode={{ ...episode, audioUrl: episode.audioUrl }} />
-        )
+      {episode?.audioUrl && (
+        <LandingPodcast episode={{ ...episode, audioUrl: episode.audioUrl }} />
+      )}
 
+      <section className="flex flex-col gap-8">
+        <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-[#9ca3af]">Últimas do blog</h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {posts.map((p) => (
+            <Link
+              key={p.slug}
+              href={`/blog/${p.slug}`}
+              className="flex flex-col gap-3 rounded-2xl border border-[#e5e7eb] bg-white p-6 transition hover:-translate-y-0.5 hover:shadow-[0_8px_24px_#0f172a1f] dark:border-[#2a2a30] dark:bg-[#17171c] dark:hover:shadow-[0_8px_24px_#00000066]"
+            >
+              <h3 className="text-lg font-semibold leading-snug tracking-tight">{p.title}</h3>
+              <p className="text-sm text-[#4b5563] dark:text-[#d4d4d8]">{p.excerpt}</p>
+              <p className="text-xs text-[#9ca3af]">{p.readingMinutes ?? 1} min de leitura</p>
+            </Link>
+          ))}
+          {posts.length === 0 && <p className="text-[#4b5563] dark:text-[#d4d4d8]">Em breve as primeiras postagens.</p>}
+        </div>
+      </section>
+
+      {topPosts.length > 0 && (
         <section className="flex flex-col gap-8">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-[#9ca3af]">Últimas do blog</h2>
+          <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-[#9ca3af]">Mais lidas da semana</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {posts.map((p) => (
+            {topPosts.map((p) => (
               <Link
                 key={p.slug}
                 href={`/blog/${p.slug}`}
-                className="flex flex-col gap-3 rounded-2xl border border-[#e5e7eb] bg-white p-6 transition hover:-translate-y-0.5 hover:shadow-[0_8px_24px_#0f172a1f] dark:border-[#2a2a30] dark:bg-[#17171c] dark:hover:shadow-[0_8px_24px_#00000066]"
+                className="flex flex-col gap-3 rounded-2xl border border-[#9333ea]/30 bg-[#9333ea]/5 p-6 transition hover:-translate-y-0.5 hover:shadow-[0_8px_24px_#9333ea22]"
               >
                 <h3 className="text-lg font-semibold leading-snug tracking-tight">{p.title}</h3>
                 <p className="text-sm text-[#4b5563] dark:text-[#d4d4d8]">{p.excerpt}</p>
-                <p className="text-xs text-[#9ca3af]">{p.readingMinutes ?? 1} min de leitura</p>
               </Link>
             ))}
-            {posts.length === 0 && <p className="text-[#4b5563] dark:text-[#d4d4d8]">Em breve as primeiras postagens.</p>}
           </div>
         </section>
+      )}
 
-        {topPosts.length > 0 && (
-          <section className="flex flex-col gap-8">
-            <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-[#9ca3af]">Mais lidas da semana</h2>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {topPosts.map((p) => (
-                <Link
-                  key={p.slug}
-                  href={`/blog/${p.slug}`}
-                  className="flex flex-col gap-3 rounded-2xl border border-[#9333ea]/30 bg-[#9333ea]/5 p-6 transition hover:-translate-y-0.5 hover:shadow-[0_8px_24px_#9333ea22]"
-                >
-                  <h3 className="text-lg font-semibold leading-snug tracking-tight">{p.title}</h3>
-                  <p className="text-sm text-[#4b5563] dark:text-[#d4d4d8]">{p.excerpt}</p>
-                </Link>
-              )}
+      <section className="flex flex-col gap-8">
+        <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-[#9ca3af]">Onde nos encontrar</h2>
+        <div className="flex flex-wrap gap-3">
+          {Object.entries(site.links).map(([k, v]) => (
+            <a
+              key={k}
+              href={v}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-xl border border-[#e5e7eb] bg-[#f9f7fa] px-5 py-3 text-sm font-semibold transition hover:border-[#9333ea]/60 hover:text-[#9333ea] dark:border-[#ac4bff4d] dark:bg-[#17171c]"
+            >
+              {k}
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-5 rounded-3xl border border-[#e5e7eb] bg-[#f9f7fa] p-10 dark:border-[#2a2a30] dark:bg-[#17171c]">
+        <h2 className="text-2xl font-bold tracking-[-0.02em]">Compartilhe a área reversa</h2>
+        <ShareButtons title="área reversa — Desmontando narrativas" url={site.url} />
+      </section>
+
+      <section className="flex flex-col gap-5 rounded-3xl border border-[#e5e7eb] bg-[#f9f7fa] p-10 dark:border-[#2a2a30] dark:bg-[#17171c]">
+        <h2 className="text-2xl font-bold tracking-[-0.02em]">Receba as análises por e-mail</h2>
+        <p className="text-sm text-[#4b5563] dark:text-[#d4d4d8]">Sem spam. Só quando sair post novo.</p>
+        <NewsletterForm />
+      </section>
+
+      <section className="flex flex-col items-start gap-6 rounded-3xl border border-[#9333ea]/40 bg-[#9333ea]/5 p-10">
+        <h2 className="max-w-2xl text-3xl font-bold tracking-[-0.02em] sm:text-4xl">
+          Toda narrativa tem um código-fonte. Vamos desmontá-lo juntos.
+        </h2>
+        <Link
+          href="/blog"
+          className="rounded-[14px] bg-[#0f0f12] px-6 py-3.5 text-base font-semibold text-white transition hover:scale-105 active:scale-95 dark:bg-white dark:text-[#0f0f12]"
+        >
+          Explorar o blog →
+        </Link>
+      </section>
+
+      <section className="flex flex-col items-start gap-6 rounded-3xl border border-[#e5e7eb] bg-[#f9f7fa] p-10 dark:border-[#2a2a30] dark:bg-[#17171c]">
+        <h2 className="text-2xl font-bold tracking-[0.22em]">Apoie a área reversa</h2>
+        <p className="text-sm text-[#4b5563] dark:text-[#d4d4d8]">Seu apoio ajuda a manter o projeto independente e semanário.</p>
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          <div className="flex flex-col gap-2">
+            <span className="text-xl">📱</span>
+            <div>
+              <p className="font-medium text-primary">Chave PIX: tiago@areareversa.com.br</p>
+              <p className="text-xs text-[#6b7280]">Tiago de Abreu Alves</p>
+              <p className="text-xs text-[#6b7280]">São Paulo, SP</p>
             </div>
-          </section>
-        )}
+          </div>
+          <div className="flex items-center gap-2">
+            <a
+              href="pix://00020126580014br.gov.bcb.pix01365d5b4252-6d17-4b1f-9081-e0746509225c5204000053039865802BR5924Tiago%20de%20Abreu%20Alves%20de%206009Sao%20Paul62230519daqr15110173136507163041A3B"
+              className="relative inline-flex items-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="inline-flex items-center">
+                <svg className="h-4 w-4 me-2 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path className="stroke-2" d="M12 2l3 9h5l-9 20l-7-4h2l-2-7 2-7h7l-9-20h5l3-9zm0 7.586l-4.586 4L12 15l7.293-2.828-1.414-4.284 4.586-4L12 10.586l-7.293 2.828L12 7.586z"/>
+                </svg>
+                Doar via PIX
+              </span>
+            </a>
+            <img
+              src="/apoiar/pix/qrcode/qr_pix_area_reversa_com_logo.png"
+              alt="QR Code PIX para doar"
+              className="w-24 h-24 object-cover rounded-lg"
+            />
+          </div>
+        </div>
+        <div className="mt-4 flex items-center gap-2 text-primary">
+          <span className="text-xs">Copie este código PIX:</span>
+          <button
+            className="text-xs font-medium underline underline-offset-2 hover:no-underline"
+            aria-label="Código PIX para copiar"
+          >
+            00020126580014br.gov.bcb.pix01365d5b4252-6d17-4b1f-9081-e0746509225c5204000053039865802BR5924Tiago de Abreu Alves de 6009Sao Paulo62230519daqr15110173136507163041A3B
+          </button>
+        </div>
+        <p className="text-xs text-[#6b7280] mt-2 dark:text-[#9ca3af]">
+          Escaneie o QR Code ou copie o código acima para doar via seu aplicativo bancário
+        </p>
+      </section>
+    </div>
+  );
+}
