@@ -80,8 +80,12 @@ export const metadata: Metadata = {
   },
   // Favicons with black background and white logo
   icons: {
-    icon: [{ url: "/favicon-black.svg", type: "image/svg+xml" }],
-    apple: [{ url: "/apple-touch-icon-black.svg", sizes: "180x180" }],
+    icon: [
+      { url: "/favicon-black.svg", type: "image/svg+xml" },
+      { url: "/icon.png", sizes: "144x144", type: "image/png" },
+    ],
+    // iOS não aceita SVG em apple-touch-icon: precisa ser PNG
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
 };
 
