@@ -170,51 +170,15 @@ export default async function Home() {
         </Link>
       </section>
 
-      <section className="flex flex-col items-start gap-6 rounded-3xl border border-[#e5e7eb] bg-[#f9f7fa] p-10 dark:border-[#2a2a30] dark:bg-[#17171c]">
-        <h2 className="text-2xl font-bold tracking-[0.22em]">Apoie a área reversa</h2>
-        <p className="text-sm text-[#4b5563] dark:text-[#d4d4d8]">Seu apoio ajuda a manter o projeto independente e semanário.</p>
-        <div className="flex flex-col sm:flex-row gap-4 pt-4">
-          <div className="flex flex-col gap-2">
-            <span className="text-xl">📱</span>
-            <div>
-              <p className="font-medium text-primary">Chave PIX: tiago@areareversa.com.br</p>
-              <p className="text-xs text-[#6b7280]">Tiago de Abreu Alves</p>
-              <p className="text-xs text-[#6b7280]">São Paulo, SP</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <a
-              href="pix://00020126580014br.gov.bcb.pix01365d5b4252-6d17-4b1f-9081-e0746509225c5204000053039865802BR5924Tiago%20de%20Abreu%20Alves%20de%206009Sao%20Paul62230519daqr15110173136507163041A3B"
-              className="relative inline-flex items-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className="inline-flex items-center">
-                <svg className="h-4 w-4 me-2 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path className="stroke-2" d="M12 2l3 9h5l-9 20l-7-4h2l-2-7 2-7h7l-9-20h5l3-9zm0 7.586l-4.586 4L12 15l7.293-2.828-1.414-4.284 4.586-4L12 10.586l-7.293 2.828L12 7.586z"/>
-                </svg>
-                Doar via PIX
-              </span>
-            </a>
-            <img
-              src="/apoiar/pix/qrcode/qr_pix_area_reversa_com_logo.png"
-              alt="QR Code PIX para doar"
-              className="w-24 h-24 object-cover rounded-lg"
-            />
-          </div>
-        </div>
-        <div className="mt-4 flex items-center gap-2 text-primary">
-          <span className="text-xs">Copie este código PIX:</span>
-          <button
-            className="text-xs font-medium underline underline-offset-2 hover:no-underline"
-            aria-label="Código PIX para copiar"
-          >
-            00020126580014br.gov.bcb.pix01365d5b4252-6d17-4b1f-9081-e0746509225c5204000053039865802BR5924Tiago de Abreu Alves de 6009Sao Paulo62230519daqr15110173136507163041A3B
-          </button>
-        </div>
-        <p className="text-xs text-[#6b7280] mt-2 dark:text-[#9ca3af]">
-          Escaneie o QR Code ou copie o código acima para doar via seu aplicativo bancário
-        </p>
+      <section className="flex flex-col items-center gap-6 rounded-3xl border border-[#e5e7eb] bg-[#f9f7fa] p-10 dark:border-[#2a2a30] dark:bg-[#17171c]">
+        <img
+          src="/apoiar/pix/qrcode/qr_pix_area_reversa_com_logo.png"
+          alt="QR Code PIX para doar"
+          className="h-64 w-64 rounded-xl object-contain sm:h-80 sm:w-80"
+        />
+        <code className="block w-full select-all break-all rounded-xl border border-[#e5e7eb] bg-white px-4 py-3 text-center text-[11px] leading-relaxed text-[#4b5563] dark:border-[#2a2a30] dark:bg-[#0f0f12] dark:text-[#d4d4d8]">
+          00020126580014br.gov.bcb.pix01365d5b4252-6d17-4b1f-9081-e0746509225c5204000053039865802BR5924Tiago de Abreu Alves de 6009Sao Paulo62230519daqr15110173136507163041A3B
+        </code>
       </section>
     </div>
   );
