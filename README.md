@@ -141,3 +141,5 @@ MIT — © 2026 área reversa
 Desenvolvido com ❤️ por **Tiago de Abreu** - Instagram [@devtiagoabreu](https://instagram.com/devtiagoabreu)
 
 Projeto iniciativa pessoal - sem fins lucrativos.
+
+Versão 1.0.0 - Novembro 2026
