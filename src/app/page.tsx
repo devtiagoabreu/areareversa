@@ -196,6 +196,11 @@ export default async function Home() {
                 Doar via PIX
               </span>
             </a>
+            <img
+              src="/apoiar/pix/qrcode/qr_pix_area_reversa_com_logo.png"
+              alt="QR Code PIX para doar"
+              className="w-24 h-24 object-cover rounded-lg"
+            />
           </div>
         </div>
         <div className="mt-4 flex items-center gap-2 text-primary">
