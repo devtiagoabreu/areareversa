@@ -43,6 +43,7 @@ type TopPost = { slug: string; title: string; excerpt: string };
  * blog, centralizada, sem as seções que o site tem.
  */
 export default function HomePageClient({
+  initialLocale,
   initialPosts,
   initialEpisode,
   initialCategories,
@@ -67,7 +68,7 @@ export default function HomePageClient({
       return;
     }
     Promise.all([
-      fetch("/api/blog").then((r) => r.json()),
+      fetch(`/api/blog?locale=${initialLocale}`).then((r) => r.json()),
       fetch("/api/podcast").then((r) => r.json()),
     ])
       .then(([postsData, podcastData]) => {

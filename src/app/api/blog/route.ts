@@ -1,4 +1,4 @@
-import { publishedFilter } from "@/lib/posts";
+import { publishedFilter, localizePost } from "@/lib/posts";
 import { prisma } from "@/lib/prisma";
 
 const PAGE_SIZE = 9;
@@ -7,6 +7,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
+  const locale = searchParams.get("locale") || "pt-BR";
   const categoria = searchParams.get("categoria") || undefined;
   const q = searchParams.get("q") || undefined;
   const pagina = searchParams.get("pagina") || "1";
@@ -26,13 +27,15 @@ export async function GET(request: Request) {
     prisma.post.groupBy({ by: ["category"], where: publishedFilter(), _count: { _all: true }, orderBy: { category: "asc" } }).catch(() => []),
   ]);
 
+  const localizedPosts = posts.map((p) => localizePost(p, locale));
+
   const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   return Response.json({
-    posts,
+    posts: localizedPosts,
     total,
     grouped,
-    searchParams: { categoria, q },
+    searchParams: { categoria, q, locale },
     page,
     pages,
   });
