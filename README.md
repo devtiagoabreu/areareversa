@@ -142,4 +142,4 @@ Desenvolvido com ❤️ por **Tiago de Abreu** - Instagram [@devtiagoabreu](http
 
 Projeto iniciativa pessoal - sem fins lucrativos.
 
-Versão 1.0.0 - Novembro 2026
+Versão 1.0.1 - Novembro 2026
